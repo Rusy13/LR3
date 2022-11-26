@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>Вывод структуры страницы.</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">
+		function print_elems(resultId, el_name, cl_name) 
+		{
+			// По идентификатору находим элемент, в который надо поместить результат
+			var result = document.getElementById(resultId);
+			result.innerHTML = "<hr/><p>"+Date()+"</p>";
+			
+			// По имени элемента ищем элементы для распечатывания
+			var el_list = document.getElementsByTagName(el_name);
+			
+			// проходим по полученному массиву
+			var list_size = el_list.length;
+			for( var i = 0; i<list_size; i++ ) {
+				var el = el_list[i];
+				// проверяем, соответствует ли класс элемента заданному
+				// При этом можно было бы искать по getElementsByClassName,
+				// однако в учебных целях сделаем именно так.
+				if (el.className == cl_name) {
+					// элемент нашли. Пройдемся по всем его непосредственным потомкам
+					for(j=0; j<el.children.length; j++){
+					  var el2 = el.children[j];
+						result.innerHTML += i+"."+j+": &lt;" + el2.nodeName + "&gt;"+
+							el2.textContent + "<br/>";
+					}
+				}
+			}
+			result.innerHTML += "<p>Проход по странице завершен!</p><hr/>";
+		}		
+	</script>
+</head>
+
+<body>
+
+	<div>
+		<h1>Разбор структуры HTML</h1>
+		<p>Этот параграф нас не интересует. При нажатии на кнопку "Распечатать" ожидаем увидеть элементы параграфов 1-4.</p>
+	</div>
+
+
+
+
+	<div class="text">
+		<div>
+			<p>1. Параграф внутри интересующего нас div</p>
+			<p>2. Параграф внутри интересующего нас div</p>
+		</div>
+	</div>
+
+
+
+	<div class="text">
+		<div>
+			<div>
+				<p>3. Параграф внутри интересующего нас div</p>
+				<p>4. Параграф внутри интересующего нас div</p>
+			</div>
+		</div>
+	</div>
+
+
+	<button onclick="print_elems('result', 'div', 'text')">Распечатать элементы</button>
+	
+	<!-- Сюда поместим результат -->
+	<div id="result"></div>
+</body>
+</html>
